@@ -14,6 +14,7 @@ class GlobalExceptionHandler {
 
     @ExceptionHandler(MethodArgumentNotValidException::class)
     fun handleValidation(ex: MethodArgumentNotValidException): ResponseEntity<ErrorResponse> {
+        
         val details = ex.bindingResult.fieldErrors
             .joinToString(", ") { "${it.field}: ${it.defaultMessage}" }
         return ResponseEntity
@@ -25,7 +26,7 @@ class GlobalExceptionHandler {
     @ExceptionHandler(ConstraintViolationException::class)
     fun handleConstraintViolation(ex: ConstraintViolationException): ResponseEntity<ErrorResponse> {
         val details = ex.constraintViolations
-            .joinToString(", ") { "${it.propertyPath.last()}: ${it.message}" }
+            .joinToString(", ") { "Password length: ${it.message}" }
         return ResponseEntity
             .status(HttpStatus.BAD_REQUEST)
             .contentType(MediaType.APPLICATION_JSON)
